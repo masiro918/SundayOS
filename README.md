@@ -1,4 +1,4 @@
-# RISC-V Mini Kernel
+# Mini Kernel
 
 A very small demonstrative operating system kernel for **SundayRISC emulator** [1]. Inspired by mini-riscv-os [2].
 
