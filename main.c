@@ -2,12 +2,14 @@
 #include "include/system.h"
 
 void sys_initializer() {
-    timer_initalizer();
+    /* Irroittavaa moniajoa ei käytetä batch-mallissa. */
     build_tasks();
 }
 
 void init() {
     sys_initializer();
-    printk("Moving to userland...\n");
-    schedule();
+    printk("Batch tasks completed, entering idle loop");
+
+    while (1) {
+    }
 }

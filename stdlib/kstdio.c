@@ -53,5 +53,6 @@ int printk(const char *s) {
     putc(']');
     counter_printk++;
     puts(s);
+    puts("\n");
     return 0;
 }

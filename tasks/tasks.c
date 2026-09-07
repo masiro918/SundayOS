@@ -1,57 +1,60 @@
-#include "../include/stdio.h"
+#include "../include/types.h"
 #include "../include/stdlib.h"
+#include "../include/kstdio.h"
+#include "../include/mm.h"
+
+extern struct task_context *active_task;
 
 
-void task1(void) {
-begin_2:
-	puts("Task1: Created!\n");
-	int i = 0;
-	while (1) {
-		i = i + 1;
-		printf("one \n");
-		printf("two \n");
-		printf("three \n");
-		printf("i is %d \n", i);
-		checkpoint();
-	}
+#define PROGRAM_LOAD_BASE 0x18000
+#define PROGRAM_LOAD_STEP 0x10000
+
+uint32_t next_free_program_load_addr = PROGRAM_LOAD_BASE;
+
+uint32_t reserve_program_load_addr() {
+	uint32_t addr = next_free_program_load_addr;
+	next_free_program_load_addr += PROGRAM_LOAD_STEP;
+	return addr;
 }
 
-void task2(void) {
-	int i = 0;
-begin_3:
-	while (i < 10) {
-		printf("%d. Hello world!\n", i);
-		i++;
-		checkpoint();
-	}
-	i = 0;
-	kill_task(1);
-	checkpoint();
-	goto begin_3;
+uint32_t get_next_program_load_addr() {
+	return next_free_program_load_addr;
 }
 
-void task0(void) {
-begin_1:
-	puts("Task0: Created!\n");
-	int i = 0;
-	int j = 0;
-	while (i < 10) {
-		printf("enter into loop\n");
-		while (j < 20) {
-			j = j + 1;
-			printf("j is %d \n", j);
-			checkpoint();
-		}
-		
-		i = i + 1;
-		printf("i is %d \n", i);
-		checkpoint();
-	}
-	task_create(&task2);
-	goto begin_1;
+void reset_program_load_addr() {
+	next_free_program_load_addr = PROGRAM_LOAD_BASE;
+}
+
+void load_and_execute_program_at(const char *filename, uint32_t load_addr) {
+	register uint32_t op asm("a0") = 3;
+	register const char *file asm("a1") = filename;
+	register uint32_t addr asm("a2") = load_addr;
+
+	asm volatile(
+		"ecall"
+		: "+r"(op)
+		: "r"(file), "r"(addr)
+		: "memory"
+	);
+}
+
+uint32_t load_and_execute_program_from_db(const char *filename) {
+	uint32_t load_addr = reserve_program_load_addr();
+	load_and_execute_program_at(filename, load_addr);
+	return load_addr;
 }
 
 void build_tasks() {
-	task_create(&task0);
-	task_create(&task1);
+	static const char filename_control[] = "control.bin";
+	uint32_t load_addr = reserve_program_load_addr();
+	int pid = task_create((void (*)(void))load_addr);
+
+	if (pid < 0) {
+		printk("Failed to create task");
+		return;
+	}
+
+	printk("Created control task, starting batch execution");
+	active_task = &tasks[pid];
+	load_and_execute_program_at(filename_control, load_addr);
 }

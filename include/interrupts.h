@@ -4,3 +4,4 @@ extern void init_machine_timer_interrupt();
 extern void enable_interrupts();
 extern void disable_interrupts();
 extern void timer_handler();
+extern void syscall_handler();

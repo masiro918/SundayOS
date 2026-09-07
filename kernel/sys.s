@@ -4,8 +4,8 @@
 .globl timer_trap_handler
 
 ecall_trap_handler:
+    mv  t6, sp
     j trap_ecall
-    nop
 
 timer_trap_handler:
     j trap_timer
@@ -15,6 +15,7 @@ timer_trap_handler:
 .extern interrupt_handler
 
 trap_ecall:
+    call    syscall_handler
     .word 0x00900013   # custom mret
 
 trap_timer:

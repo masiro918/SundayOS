@@ -42,6 +42,7 @@ void run_task(int pid) {
 	}
 
 	active_task = &tasks[pid];
+	printk("Run task");
 	do_context_switch(&kernel, &tasks[pid]);
 }
 

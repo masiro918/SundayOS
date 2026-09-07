@@ -1,9 +1,6 @@
-extern int run_scheduler;
-extern void to_kernel();
-
 void checkpoint() {
-	if (run_scheduler) {
-		run_scheduler = 0;
-		to_kernel();
-	}
+	/*
+	 * Batch-tasking mallissa irroittavaa context switchiä ei tehdä.
+	 * checkpoint on tarkoituksella no-op yhteensopivuuden vuoksi.
+	 */
 }
