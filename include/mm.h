@@ -20,9 +20,14 @@ struct task_context {
 #define MAX_TASK 8
 #define STACK_SIZE 1024
 
+#define PROGRAM_LOAD_BASE 0x18000
+#define PROGRAM_LOAD_STEP 0x10000
+
 extern int task_count;
 extern struct task_context tasks[MAX_TASK];
 extern struct task_context *active_task;
 extern struct task_context kernel;
 
+
 extern void do_context_switch(struct task_context *old, struct task_context *new);
+extern uint32_t reserve_program_load_addr();

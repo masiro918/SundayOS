@@ -6,25 +6,6 @@
 extern struct task_context *active_task;
 
 
-#define PROGRAM_LOAD_BASE 0x18000
-#define PROGRAM_LOAD_STEP 0x10000
-
-uint32_t next_free_program_load_addr = PROGRAM_LOAD_BASE;
-
-uint32_t reserve_program_load_addr() {
-	uint32_t addr = next_free_program_load_addr;
-	next_free_program_load_addr += PROGRAM_LOAD_STEP;
-	return addr;
-}
-
-uint32_t get_next_program_load_addr() {
-	return next_free_program_load_addr;
-}
-
-void reset_program_load_addr() {
-	next_free_program_load_addr = PROGRAM_LOAD_BASE;
-}
-
 void load_and_execute_program_at(const char *filename, uint32_t load_addr) {
 	register uint32_t op asm("a0") = 3;
 	register const char *file asm("a1") = filename;

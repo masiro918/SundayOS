@@ -6,8 +6,8 @@ TARGET = kernel.elf
 
 CFLAGS = -nostdlib -fno-builtin -mcmodel=medany -march=rv32ima -mabi=ilp32 -Iinclude
 
-C_SRCS = $(wildcard *.c) $(wildcard drivers/*.c) $(wildcard kernel/*.c) $(wildcard stdlib/*.c) $(wildcard tasks/*.c)
-S_SRCS = $(wildcard boot/*.s) $(wildcard drivers/*.s) $(wildcard kernel/*.s) $(wildcard stdlib/*.s)  
+C_SRCS = $(wildcard *.c) $(wildcard drivers/*.c) $(wildcard kernel/*.c) $(wildcard lib/*.c) $(wildcard tasks/*.c)
+S_SRCS = $(wildcard boot/*.s) $(wildcard drivers/*.s) $(wildcard kernel/*.s) $(wildcard lib/*.s)  
 
 C_OBJ = $(C_SRCS:.c=.o)
 S_OBJ = $(S_SRCS:.s=.s.o)
