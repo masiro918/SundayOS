@@ -16,7 +16,7 @@ timer_trap_handler:
 
 trap_ecall:
     call    syscall_handler
-    .word 0x00900013   # custom mret
+    .word 0x00900013   # custom sret
 
 trap_timer:
     addi    sp, sp, -120
@@ -88,7 +88,7 @@ trap_timer:
     lw      t6, 116(sp)
 
     addi    sp, sp, 120
-    .word 0x00900013   # custom mret
+    .word 0x00900013   # custom sret
 
 .globl do_context_switch
 do_context_switch:
