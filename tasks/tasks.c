@@ -5,7 +5,12 @@
 
 extern struct task_context *active_task;
 
-
+/**
+ * @brief Loads program by filename into specific address and executes it.
+ * 
+ * @param filename the program's filename
+ * @param load_addr address to load
+ */
 void load_and_execute_program_at(const char *filename, uint32_t load_addr) {
 	register uint32_t op asm("a0") = 3;
 	register const char *file asm("a1") = filename;
@@ -19,13 +24,7 @@ void load_and_execute_program_at(const char *filename, uint32_t load_addr) {
 	);
 }
 
-uint32_t load_and_execute_program_from_db(const char *filename) {
-	uint32_t load_addr = reserve_program_load_addr();
-	load_and_execute_program_at(filename, load_addr);
-	return load_addr;
-}
-
-void build_tasks() {
+void run_init() {
 	static const char filename_control[] = "control.bin";
 	uint32_t load_addr = reserve_program_load_addr();
 	int pid = task_create((void (*)(void))load_addr);

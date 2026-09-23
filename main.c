@@ -3,13 +3,12 @@
 
 void sys_initializer() {
     /* Irroittavaa moniajoa ei käytetä batch-mallissa. */
-    build_tasks();
+    run_init();
 }
 
 void init() {
     sys_initializer();
-    printk("Batch tasks completed, entering idle loop");
-
     while (1) {
+        
     }
 }

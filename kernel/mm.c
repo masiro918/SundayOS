@@ -14,14 +14,6 @@ uint32_t reserve_program_load_addr() {
 	return addr;
 }
 
-uint32_t get_next_program_load_addr() {
-	return next_free_program_load_addr;
-}
-
-void reset_program_load_addr() {
-	next_free_program_load_addr = PROGRAM_LOAD_BASE;
-}
-
 /**
  * @brief create task
  * 
