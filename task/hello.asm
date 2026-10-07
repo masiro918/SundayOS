@@ -9,6 +9,12 @@ _start:
     li    a7, 2
     .word 0x00800013
 
+    li      s0, 1
+    li      s1, 150
+.Lloop:
+    addi    s0, s0, 1
+    bne     s0, s1, .Lloop
+
     # [hello] child palasi exitillä, nyt hello exit (syscall 14)
     li    a7, 14
     .word 0x00800013

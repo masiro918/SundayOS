@@ -9,6 +9,8 @@ extern uint8_t peek(uint32_t addr);
 extern void poke(uint32_t addr, int val);
 extern void run_task(int pid);
 
+extern int run_scheduler;
+
 static uint32_t read_saved_mepc() {
     uint32_t mepc = 0;
     mepc |= (uint32_t)peek(0x1FFFFB);
@@ -90,6 +92,9 @@ static int get_active_pid() {
 }
 
 void syscall_handler(int param1, int param2, int param3, int param4, int param5, int param6, int param7, int num) {
+    disable_interrupts();
+    run_scheduler = 0;
+    //enable_interrupts();
     int current_pid = get_active_pid();
     printf("[pid:%d] syscall: %d\n", current_pid, num);
     char *output = (char *)param1;
@@ -99,7 +104,7 @@ void syscall_handler(int param1, int param2, int param3, int param4, int param5,
     (void)param5;
     (void)param6;
     (void)param7;
-    
+        
     switch (num)
     {
         case 1:

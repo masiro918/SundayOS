@@ -3,6 +3,9 @@
 
 void sys_initializer() {
     /* Irroittavaa moniajoa ei käytetä batch-mallissa. */
+    printk("Set timer interrupts...");
+    timer_initalizer();
+    printk("Start init...");
     run_init();
 }
 
