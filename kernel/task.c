@@ -23,12 +23,8 @@ void kill_task(int pid) {
 void exit_current_task() {
 	int pid = get_active_pid();
 
-	if (pid < 0) {
-		pid = task_count - 1;
-	}
-
-	if (pid < 0) {
-		printk("Exit failed: no task to terminate");
+	if (pid <= 0) {
+		printk("Exit failed: you cannot terminate init process");
 		return;
 	}
 
