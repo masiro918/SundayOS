@@ -77,7 +77,7 @@ static void save_current_task_context(int pid) {
     tasks[pid].s11 = s11;
 }
 
-static int get_active_pid() {
+int get_active_pid() {
     if (!active_task) {
         return -1;
     }
@@ -150,28 +150,7 @@ void syscall_handler(int param1, int param2, int param3, int param4, int param5,
 
         case 14: {
             /* exit: opposite of spawn (11), return to previous task context */
-            int pid = get_active_pid();
-
-            if (pid < 0) {
-                pid = task_count - 1;
-            }
-
-            if (pid < 0) {
-                printk("Exit failed: no task to terminate");
-                break;
-            }
-
-            int previous_pid = pid - 1;
-
-            uint32_t mepc = tasks[previous_pid].ra;
-            poke(0x1FFFFB, mepc);
-
-            if (previous_pid >= 0) {
-                active_task = &tasks[previous_pid];
-                run_task(previous_pid);
-            } else {
-                active_task = &kernel;
-            }
+            exit_current_task();
             break;
         }
 

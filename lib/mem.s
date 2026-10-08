@@ -4,7 +4,7 @@ peek:
     lbu     a0, 0(a0)
     ret
 .global peek32
-/* uint8_t peek32(uint32_t addr);  */
+/* uint32_t peek32(uint32_t addr);  */
 peek32:
     lw     a0, 0(a0)
     ret

@@ -20,6 +20,31 @@ void kill_task(int pid) {
 	tasks[pid].sp = (uint32_t)-1;
 }
 
+void exit_current_task() {
+	int pid = get_active_pid();
+
+	if (pid < 0) {
+		pid = task_count - 1;
+	}
+
+	if (pid < 0) {
+		printk("Exit failed: no task to terminate");
+		return;
+	}
+
+	int previous_pid = pid - 1;
+
+	uint32_t mepc = tasks[previous_pid].ra;
+	poke(0x1FFFFB, mepc);
+
+	if (previous_pid >= 0) {
+		active_task = &tasks[previous_pid];
+		run_task(previous_pid);
+	} else {
+		active_task = &kernel;
+	}
+}
+
 /**
  * @brief switch to task `task[i]`
  * 
