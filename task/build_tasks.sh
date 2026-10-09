@@ -25,5 +25,6 @@ build_one() {
 }
 
 build_one "$(dirname "$0")/child.asm"
+build_one "$(dirname "$0")/child2.asm"
 build_one "$(dirname "$0")/hello.asm"
 build_one "$(dirname "$0")/control.asm"

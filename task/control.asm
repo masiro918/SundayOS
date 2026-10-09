@@ -22,8 +22,18 @@ _start:
     li    a7, 2
     .word 0x00800013
 
+    # spawn child.bin
+.Lchild_ptr:
+    auipc a0, %pcrel_hi(child)
+    addi  a0, a0, %pcrel_lo(.Lchild_ptr)
+    li    a7, 11
+    .word 0x00800013
+
 1:
     j     1b
 
 hello_name:
     .asciz "hello.bin"
+
+child:
+    .asciz "child.bin"
