@@ -30,6 +30,9 @@ void exit_current_task() {
 
 	int previous_pid = pid - 1;
 
+	tasks[pid].ra = (uint32_t)-1;
+	tasks[pid].sp = (uint32_t)-1;
+
 	uint32_t mepc = tasks[previous_pid].ra;
 	poke(0x1FFFFB, mepc);
 
@@ -48,13 +51,16 @@ void exit_current_task() {
  */
  
 void run_task(int pid) {
+begin:
 	if (pid < 0 || pid >= task_count) {
 		return;
 	}
 
 	if (tasks[pid].ra == (uint32_t)-1) {
-		printk("The task is killed\n");
-		tasks[pid].ra = (uint32_t)-2;
+		printk("The task is killed");
+		printk("Try to execute task with pid");
+		pid = pid - 1;
+		goto begin;
 		return;
 	}
 
